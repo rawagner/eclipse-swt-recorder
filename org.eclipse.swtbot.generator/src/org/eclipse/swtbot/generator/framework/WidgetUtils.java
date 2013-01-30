@@ -11,8 +11,12 @@
  *******************************************************************************/
 package org.eclipse.swtbot.generator.framework;
 
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 public class WidgetUtils {
@@ -38,5 +42,51 @@ public class WidgetUtils {
 
 		throw new RuntimeException("Could not determine index for widget " + control);
 	}
+	
+	public static String getGroup(Control control){
+		Composite parent = control.getParent();
+		while(parent != null){
+			if(parent instanceof Group){
+				return ((Group)parent).getText();
+			}
+			parent = parent.getParent();
+		}
+
+		return null;
+	}
+	
+	public static Shell getShell(Control widget) {
+		while (widget != null) {
+			if (widget instanceof Shell) {
+				return (Shell)widget;
+			} else {
+				widget = ((Control)widget).getParent();
+			}
+		}
+		return null;
+	}
+	
+	
+	public static CTabFolder getView(Control widget) {
+		while (widget != null) {
+			if (widget instanceof CTabFolder) {
+				return (CTabFolder)widget;
+			} else {
+				widget = ((Control)widget).getParent();
+			}
+		}
+		return null;
+	}
+
+	public static String getLabel(Control widget) {
+		Control[] controls = widget.getParent().getChildren();
+		for (int i = 0; i < controls.length; i++) {
+			if (controls[i] instanceof Label && controls[i + 1].equals(widget)) {
+				return ((Label) controls[i]).getText();
+			}
+		}
+		return null;
+	}
+
 
 }

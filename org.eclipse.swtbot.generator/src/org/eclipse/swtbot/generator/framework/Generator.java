@@ -13,9 +13,20 @@ package org.eclipse.swtbot.generator.framework;
 
 import java.util.List;
 
-public interface Generator {
+public abstract class Generator {
 
-	public List<GenerationRule> createRules();
-	public String getLabel();
+	public List<GenerationStackRule> createStackRules(){
+		return sortStackRules();
+	}
+	public abstract List<GenerationSimpleRule> createSimpleRules();
+	public List<GenerationComplexRule> createComplexRules(){
+		return sortComplexRules();
+	}
+	
+	protected abstract List<GenerationComplexRule> sortComplexRules();
+	protected abstract List<GenerationStackRule> sortStackRules();
+	
+	public abstract String getLabel();
+	public abstract boolean useStacks();
 
 }
